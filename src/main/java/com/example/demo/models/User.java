@@ -1,8 +1,6 @@
 package com.example.demo.models;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import jakarta.persistence.Column;
@@ -15,9 +13,19 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "user")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
 public class User {
     public interface CreateUser {}
     public interface UpdateUser {}
@@ -41,75 +49,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user")
+    @JsonProperty(access = Access.WRITE_ONLY)
     private List<Task> tasks = new ArrayList<Task>();
-
-    
-    
-    public User() {
-    }
-    
-    public User(Long id, String username, String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-    }
-    
-    public Long getId() {
-        return this.id;
-    }
-    
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    
-    public String getPassword() {
-        return this.password;
-    }
-    
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
-    @JsonIgnore
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this)
-        return true;
-        
-        if (obj == null) {
-            return false;
-        }
-        
-        if (!(obj instanceof User)) {
-            return false;
-        }
-        
-        User other = (User) obj;
-        return Objects.equals(this.id, other.id) && Objects.equals(this.username, other.username) && Objects.equals(this.password, other.password);
-    }
-
-    @Override
-    public int hashCode() {
-        final int PRIME = 31;
-        int result = 1;
-        result = PRIME * result + ((this.id == null) ? 0 : this.id.hashCode());
-        return result;
-    }
     
 }
